@@ -16,8 +16,24 @@ import { registerSocket } from "./socket/index.js";
 
 const app = express();
 const server = http.createServer(app);
+
+function isAllowedOrigin(origin?: string) {
+  if (!origin) return true;
+
+  const isConfiguredOrigin = config.clientUrls.includes(origin);
+  const isLocalDevOrigin = /^http:\/\/(localhost|127\.0\.0\.1):51\d{2}$/.test(origin);
+  const isVercelOrigin = /^https:\/\/ecosphere-smart-waste-portal(?:-[a-z0-9-]+)?\.vercel\.app$/i.test(origin);
+
+  return isConfiguredOrigin || isVercelOrigin || (config.nodeEnv !== "production" && isLocalDevOrigin);
+}
+
 const io = new Server(server, {
-  cors: { origin: config.clientUrls, credentials: true }
+  cors: {
+    origin(origin, callback) {
+      callback(null, isAllowedOrigin(origin));
+    },
+    credentials: true
+  }
 });
 
 registerSocket(io);
@@ -25,8 +41,7 @@ registerSocket(io);
 app.use(
   cors({
     origin(origin, callback) {
-      const isLocalDevOrigin = !origin || /^http:\/\/(localhost|127\.0\.0\.1):51\d{2}$/.test(origin);
-      if (config.clientUrls.includes(origin || "") || (config.nodeEnv !== "production" && isLocalDevOrigin)) {
+      if (isAllowedOrigin(origin)) {
         callback(null, true);
         return;
       }
