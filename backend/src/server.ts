@@ -5,6 +5,7 @@ import rateLimit from "express-rate-limit";
 import morgan from "morgan";
 import { Server } from "socket.io";
 import { config } from "./config.js";
+import { connectMongoIfConfigured } from "./db/mongoose.js";
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
 import aiRoutes from "./routes/ai.routes.js";
 import authRoutes from "./routes/auth.routes.js";
@@ -57,6 +58,12 @@ app.use("/api/notifications", notificationRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-server.listen(config.port, () => {
-  console.log(`Smart Waste backend running on http://localhost:${config.port}`);
-});
+async function startServer() {
+  await connectMongoIfConfigured();
+
+  server.listen(config.port, () => {
+    console.log(`Smart Waste backend running on http://localhost:${config.port}`);
+  });
+}
+
+void startServer();

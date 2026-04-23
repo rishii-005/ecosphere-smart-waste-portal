@@ -1,6 +1,10 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { isMongoEnabled } from "../db/mongoose.js";
+import { NotificationModel } from "../models/NotificationModel.js";
+import { PickupRequestModel } from "../models/PickupRequestModel.js";
+import { UserModel } from "../models/UserModel.js";
 import type { DatabaseShape, NotificationItem, PickupRequest, User } from "../types.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,10 +27,21 @@ async function writeDatabase(db: DatabaseShape): Promise<void> {
 
 export const store = {
   async all() {
+    if (isMongoEnabled()) {
+      const [users, requests, notifications] = await Promise.all([
+        UserModel.find().lean<User[]>(),
+        PickupRequestModel.find().sort({ createdAt: -1 }).lean<PickupRequest[]>(),
+        NotificationModel.find().sort({ createdAt: -1 }).lean<NotificationItem[]>()
+      ]);
+      return { users, requests, notifications };
+    }
     return readDatabase();
   },
 
   async users() {
+    if (isMongoEnabled()) {
+      return UserModel.find().lean<User[]>();
+    }
     return (await readDatabase()).users;
   },
 
@@ -41,6 +56,10 @@ export const store = {
   },
 
   async addUser(user: User) {
+    if (isMongoEnabled()) {
+      await UserModel.create(user);
+      return user;
+    }
     const db = await readDatabase();
     db.users.push(user);
     await writeDatabase(db);
@@ -48,10 +67,17 @@ export const store = {
   },
 
   async requests() {
+    if (isMongoEnabled()) {
+      return PickupRequestModel.find().sort({ createdAt: -1 }).lean<PickupRequest[]>();
+    }
     return (await readDatabase()).requests;
   },
 
   async addRequest(request: PickupRequest) {
+    if (isMongoEnabled()) {
+      await PickupRequestModel.create(request);
+      return request;
+    }
     const db = await readDatabase();
     db.requests.unshift(request);
     await writeDatabase(db);
@@ -59,6 +85,14 @@ export const store = {
   },
 
   async updateRequest(id: string, patch: Partial<PickupRequest>) {
+    if (isMongoEnabled()) {
+      const request = await PickupRequestModel.findOneAndUpdate(
+        { id },
+        { ...patch, updatedAt: new Date().toISOString() },
+        { new: true }
+      ).lean<PickupRequest | null>();
+      return request;
+    }
     const db = await readDatabase();
     const index = db.requests.findIndex((request) => request.id === id);
     if (index === -1) return null;
@@ -68,6 +102,10 @@ export const store = {
   },
 
   async addNotification(notification: NotificationItem) {
+    if (isMongoEnabled()) {
+      await NotificationModel.create(notification);
+      return notification;
+    }
     const db = await readDatabase();
     db.notifications.unshift(notification);
     await writeDatabase(db);
@@ -75,6 +113,9 @@ export const store = {
   },
 
   async notificationsForUser(userId: string) {
+    if (isMongoEnabled()) {
+      return NotificationModel.find({ userId }).sort({ createdAt: -1 }).lean<NotificationItem[]>();
+    }
     return (await readDatabase()).notifications.filter((item) => item.userId === userId);
   }
 };

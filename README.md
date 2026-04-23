@@ -49,6 +49,8 @@ A full-stack smart waste management platform with pickup requests, live status t
 - Node.js
 - Express
 - TypeScript
+- Mongoose
+- MongoDB Atlas ready
 - Socket.IO
 - JWT Authentication
 - Zod Validation
@@ -116,6 +118,8 @@ Create `backend/.env` from [backend/.env.example](C:/Users/ASUS/Documents/Codex/
 PORT=5000
 CLIENT_URL=http://localhost:5173
 JWT_SECRET=use-a-long-random-secret
+MONGODB_URI=
+MONGODB_DB_NAME=ecosphere-smart-waste
 OPENAI_API_KEY=sk-your-key
 OPENAI_BASE_URL=
 OPENAI_MODEL=gpt-4.1-mini
@@ -124,6 +128,8 @@ OPENAI_MODEL=gpt-4.1-mini
 For Groq using the OpenAI-compatible API mode, use:
 
 ```env
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-url>/?retryWrites=true&w=majority&appName=Cluster0
+MONGODB_DB_NAME=ecosphere-smart-waste
 OPENAI_API_KEY=your-groq-key
 OPENAI_BASE_URL=https://api.groq.com/openai/v1
 OPENAI_MODEL=llama-3.3-70b-versatile
@@ -250,9 +256,11 @@ The repository includes [render.yaml](C:/Users/ASUS/Documents/Codex/2026-04-19-a
 PORT=5000
 CLIENT_URL=https://your-frontend-url.vercel.app
 JWT_SECRET=your-production-secret
+MONGODB_URI=your-mongodb-atlas-connection-string
+MONGODB_DB_NAME=ecosphere-smart-waste
 OPENAI_API_KEY=your-openai-or-groq-key
-OPENAI_BASE_URL=
-OPENAI_MODEL=gpt-4.1-mini
+OPENAI_BASE_URL=https://api.groq.com/openai/v1
+OPENAI_MODEL=llama-3.3-70b-versatile
 ```
 
 ### Build and start commands
@@ -275,9 +283,9 @@ Add the same environment variables used for Render.
 
 ## Production Notes
 
-- The current storage layer uses `backend/src/data/db.json`
-- This is suitable for demos and student submissions
-- For long-term hosting, migrate to MongoDB or PostgreSQL
+- The backend now supports MongoDB Atlas through Mongoose
+- If `MONGODB_URI` is set, MongoDB is used automatically
+- If `MONGODB_URI` is not set, the app falls back to `backend/src/data/db.json`
 - OpenAI-compatible API keys must remain server-side only
 
 ## Build Verification

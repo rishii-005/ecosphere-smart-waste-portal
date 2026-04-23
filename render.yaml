@@ -12,7 +12,13 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB_NAME
+        value: ecosphere-smart-waste
       - key: OPENAI_API_KEY
         sync: false
+      - key: OPENAI_BASE_URL
+        sync: false
       - key: OPENAI_MODEL
-        value: gpt-4.1-mini
+        value: llama-3.3-70b-versatile
