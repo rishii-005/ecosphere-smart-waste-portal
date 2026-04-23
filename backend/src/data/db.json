@@ -1,0 +1,136 @@
+{
+  "users": [
+    {
+      "id": "admin-001",
+      "name": "City Admin",
+      "email": "admin@smartwaste.local",
+      "passwordHash": "$2a$10$U.0n0fecze..SGilfShkDuzI1WkTrb.OWvNQC0AV0xzdoIiQ/RzpC",
+      "role": "admin",
+      "createdAt": "2026-04-19T10:00:00.000Z"
+    },
+    {
+      "id": "user-001",
+      "name": "Asha Citizen",
+      "email": "asha@example.com",
+      "passwordHash": "$2a$10$U.0n0fecze..SGilfShkDuzI1WkTrb.OWvNQC0AV0xzdoIiQ/RzpC",
+      "role": "user",
+      "createdAt": "2026-04-19T10:01:00.000Z"
+    },
+    {
+      "id": "5c35b684-90ae-4077-9a14-7a6395a78457",
+      "name": "Rishu",
+      "email": "rishuraj99340@gmail.com",
+      "passwordHash": "$2a$10$gdXECmVQvZ1wuIQXXfC2WudN2VyHh4AQqKWhFkp9oxODqZzVCWV9G",
+      "role": "user",
+      "createdAt": "2026-04-22T05:11:17.267Z"
+    }
+  ],
+  "requests": [
+    {
+      "id": "aae693ff-71ec-42ac-90a2-1615978ff84b",
+      "userId": "5c35b684-90ae-4077-9a14-7a6395a78457",
+      "userName": "Rishu",
+      "wasteType": "plastic",
+      "quantityKg": 2,
+      "address": "BH-3,lpu",
+      "pickupDate": "2026-04-23",
+      "notes": "waste bags",
+      "imageUrl": "",
+      "status": "completed",
+      "createdAt": "2026-04-22T07:47:07.785Z",
+      "updatedAt": "2026-04-23T05:56:11.104Z"
+    },
+    {
+      "id": "20763700-b81c-453a-a22d-b082df6f0d35",
+      "userId": "5c35b684-90ae-4077-9a14-7a6395a78457",
+      "userName": "Rishu",
+      "wasteType": "plastic",
+      "quantityKg": 2,
+      "address": "BH-3,lpu",
+      "pickupDate": "2026-04-23",
+      "notes": "waste bags",
+      "imageUrl": "",
+      "status": "completed",
+      "createdAt": "2026-04-22T07:47:00.500Z",
+      "updatedAt": "2026-04-23T05:56:15.656Z"
+    },
+    {
+      "id": "req-001",
+      "userId": "user-001",
+      "userName": "Asha Citizen",
+      "wasteType": "plastic",
+      "quantityKg": 4,
+      "address": "12 Green Street, Bengaluru",
+      "pickupDate": "2026-04-22",
+      "notes": "Mostly PET bottles, cleaned and packed.",
+      "imageUrl": "",
+      "status": "completed",
+      "createdAt": "2026-04-19T10:04:00.000Z",
+      "updatedAt": "2026-04-22T07:43:49.828Z"
+    },
+    {
+      "id": "req-002",
+      "userId": "user-001",
+      "userName": "Asha Citizen",
+      "wasteType": "organic",
+      "quantityKg": 7,
+      "address": "12 Green Street, Bengaluru",
+      "pickupDate": "2026-04-20",
+      "notes": "Kitchen scraps for composting.",
+      "imageUrl": "",
+      "status": "completed",
+      "createdAt": "2026-04-18T09:30:00.000Z",
+      "updatedAt": "2026-04-22T07:45:00.868Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "5c37cf64-68fc-45b6-8099-2d74f793e164",
+      "userId": "5c35b684-90ae-4077-9a14-7a6395a78457",
+      "title": "Pickup status updated",
+      "message": "Your plastic pickup is now completed.",
+      "read": false,
+      "createdAt": "2026-04-23T05:56:15.657Z"
+    },
+    {
+      "id": "ae81d3ce-cc5f-42d1-8908-440a8eeabc5c",
+      "userId": "5c35b684-90ae-4077-9a14-7a6395a78457",
+      "title": "Pickup status updated",
+      "message": "Your plastic pickup is now completed.",
+      "read": false,
+      "createdAt": "2026-04-23T05:56:11.105Z"
+    },
+    {
+      "id": "5351c939-8f9c-4339-8a78-ac5d883b0e81",
+      "userId": "5c35b684-90ae-4077-9a14-7a6395a78457",
+      "title": "Pickup status updated",
+      "message": "Your plastic pickup is now in-progress.",
+      "read": false,
+      "createdAt": "2026-04-23T05:56:02.895Z"
+    },
+    {
+      "id": "688fab56-c912-4daf-a076-e79032bb4f3a",
+      "userId": "user-001",
+      "title": "Pickup status updated",
+      "message": "Your organic pickup is now completed.",
+      "read": false,
+      "createdAt": "2026-04-22T07:45:00.870Z"
+    },
+    {
+      "id": "69290556-3d8b-4d5a-8e8e-aefff6cc336b",
+      "userId": "user-001",
+      "title": "Pickup status updated",
+      "message": "Your organic pickup is now in-progress.",
+      "read": false,
+      "createdAt": "2026-04-22T07:44:04.047Z"
+    },
+    {
+      "id": "8e8c630e-5c9f-4971-8691-bc9d87d40119",
+      "userId": "user-001",
+      "title": "Pickup status updated",
+      "message": "Your plastic pickup is now completed.",
+      "read": false,
+      "createdAt": "2026-04-22T07:43:49.832Z"
+    }
+  ]
+}
