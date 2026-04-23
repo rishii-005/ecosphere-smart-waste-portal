@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -8,8 +9,17 @@ import { UserModel } from "../models/UserModel.js";
 import type { DatabaseShape, NotificationItem, PickupRequest, User } from "../types.js";
 
 const __filename = fileURLToPath(import.meta.url);
-path.dirname(__filename);
-const dbPath = process.env.DB_PATH || path.resolve(process.cwd(), "src", "data", "db.json");
+const __dirname = path.dirname(__filename);
+
+const dbCandidates = [
+  process.env.DB_PATH,
+  path.resolve(process.cwd(), "src", "data", "db.json"),
+  path.resolve(process.cwd(), "backend", "src", "data", "db.json"),
+  path.resolve(__dirname, "db.json"),
+  path.resolve(__dirname, "..", "..", "src", "data", "db.json")
+].filter((candidate): candidate is string => Boolean(candidate));
+
+const dbPath = dbCandidates.find((candidate) => existsSync(candidate)) || dbCandidates[0];
 
 let cache: DatabaseShape | null = null;
 
