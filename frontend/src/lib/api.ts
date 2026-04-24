@@ -1,4 +1,4 @@
-import type { PickupRequest, StatsSummary, User } from "../types";
+import type { AdminUserProfile, PickupRequest, StatsSummary, User } from "../types";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
 
@@ -43,7 +43,7 @@ export const api = {
       body: JSON.stringify({ name, email, password })
     }),
 
-  getRequests: () => request<{ requests: PickupRequest[] }>("/api/requests"),
+  getRequests: () => request<{ requests: PickupRequest[]; users?: AdminUserProfile[] }>("/api/requests"),
 
   createRequest: (payload: Omit<PickupRequest, "id" | "userId" | "userName" | "status" | "createdAt" | "updatedAt">) =>
     request<{ request: PickupRequest }>("/api/requests", {

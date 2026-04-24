@@ -32,7 +32,30 @@ const statusSchema = z.object({
 router.get("/", requireAuth, async (req, res, next) => {
   try {
     const all = await store.requests();
-    const requests = req.user?.role === "admin" ? all : all.filter((item) => item.userId === req.user?.id);
+    if (req.user?.role === "admin") {
+      const users = await store.users();
+      const safeUsers = users.map((user) => {
+        const userRequests = all.filter((item) => item.userId === user.id);
+        const totalQuantityKg = userRequests.reduce((sum, item) => sum + item.quantityKg, 0);
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          createdAt: user.createdAt,
+          totalRequests: userRequests.length,
+          totalQuantityKg,
+          latestRequestAt: userRequests[0]?.createdAt || null,
+          requests: userRequests
+        };
+      });
+
+      res.json({ requests: all, users: safeUsers });
+      return;
+    }
+
+    const requests = all.filter((item) => item.userId === req.user?.id);
     res.json({ requests });
   } catch (error) {
     next(error);

@@ -25,6 +25,18 @@ export interface PickupRequest {
   updatedAt: string;
 }
 
+export interface AdminUserProfile {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  createdAt: string;
+  totalRequests: number;
+  totalQuantityKg: number;
+  latestRequestAt: string | null;
+  requests: PickupRequest[];
+}
+
 export interface NotificationItem {
   id: string;
   userId: string;
