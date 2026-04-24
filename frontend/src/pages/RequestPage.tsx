@@ -118,7 +118,8 @@ export function RequestPage() {
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     setLoading(true);
     try {
       await api.createRequest({
@@ -130,7 +131,7 @@ export function RequestPage() {
         imageUrl: preview
       });
       toast.success("Pickup request submitted.");
-      event.currentTarget.reset();
+      formElement.reset();
       setPreview("");
       setWasteType("plastic");
       setAddress("");

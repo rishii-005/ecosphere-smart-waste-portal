@@ -125,6 +125,11 @@ export function Layout() {
                   <item.icon size={17} /> {item.label}
                 </NavLink>
               ))}
+              {user?.role === "admin" && (
+                <NavLink to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2 font-semibold">
+                  <Shield size={17} /> Admin
+                </NavLink>
+              )}
               {user && (
                 <>
                   <Link to="/profile" className="flex items-center gap-2 rounded-lg px-3 py-2 font-semibold">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -6,42 +6,53 @@ import "./index.css";
 import { Layout } from "./components/Layout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
-import { AdminPage } from "./pages/AdminPage";
-import { AiChatPage } from "./pages/AiChatPage";
-import { AuthPage } from "./pages/AuthPage";
-import { DashboardPage } from "./pages/DashboardPage";
-import { LandingPage } from "./pages/LandingPage";
-import { ProfilePage } from "./pages/ProfilePage";
-import { RecyclingPage } from "./pages/RecyclingPage";
-import { RequestPage } from "./pages/RequestPage";
+
+const LandingPage = lazy(() => import("./pages/LandingPage").then((module) => ({ default: module.LandingPage })));
+const AuthPage = lazy(() => import("./pages/AuthPage").then((module) => ({ default: module.AuthPage })));
+const DashboardPage = lazy(() => import("./pages/DashboardPage").then((module) => ({ default: module.DashboardPage })));
+const RequestPage = lazy(() => import("./pages/RequestPage").then((module) => ({ default: module.RequestPage })));
+const ProfilePage = lazy(() => import("./pages/ProfilePage").then((module) => ({ default: module.ProfilePage })));
+const AiChatPage = lazy(() => import("./pages/AiChatPage").then((module) => ({ default: module.AiChatPage })));
+const RecyclingPage = lazy(() => import("./pages/RecyclingPage").then((module) => ({ default: module.RecyclingPage })));
+const AdminPage = lazy(() => import("./pages/AdminPage").then((module) => ({ default: module.AdminPage })));
+
+function RouteLoader() {
+  return (
+    <div className="grid min-h-[50vh] place-items-center px-4">
+      <div className="rounded-lg border border-black/10 bg-white/70 px-5 py-4 text-sm font-semibold shadow-sm dark:border-white/10 dark:bg-white/10">
+        Loading...
+      </div>
+    </div>
+  );
+}
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <LandingPage /> },
-      { path: "login", element: <AuthPage /> },
+      { index: true, element: <Suspense fallback={<RouteLoader />}><LandingPage /></Suspense> },
+      { path: "login", element: <Suspense fallback={<RouteLoader />}><AuthPage /></Suspense> },
       {
         path: "dashboard",
-        element: <ProtectedRoute><DashboardPage /></ProtectedRoute>
+        element: <ProtectedRoute><Suspense fallback={<RouteLoader />}><DashboardPage /></Suspense></ProtectedRoute>
       },
       {
         path: "request",
-        element: <ProtectedRoute><RequestPage /></ProtectedRoute>
+        element: <ProtectedRoute><Suspense fallback={<RouteLoader />}><RequestPage /></Suspense></ProtectedRoute>
       },
       {
         path: "profile",
-        element: <ProtectedRoute><ProfilePage /></ProtectedRoute>
+        element: <ProtectedRoute><Suspense fallback={<RouteLoader />}><ProfilePage /></Suspense></ProtectedRoute>
       },
       {
         path: "ai",
-        element: <ProtectedRoute><AiChatPage /></ProtectedRoute>
+        element: <ProtectedRoute><Suspense fallback={<RouteLoader />}><AiChatPage /></Suspense></ProtectedRoute>
       },
-      { path: "recycling", element: <RecyclingPage /> },
+      { path: "recycling", element: <Suspense fallback={<RouteLoader />}><RecyclingPage /></Suspense> },
       {
         path: "admin",
-        element: <ProtectedRoute role="admin"><AdminPage /></ProtectedRoute>
+        element: <ProtectedRoute role="admin"><Suspense fallback={<RouteLoader />}><AdminPage /></Suspense></ProtectedRoute>
       }
     ]
   }
