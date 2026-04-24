@@ -157,7 +157,22 @@ export function AdminPage() {
                   {request.notes && <p className="mt-2 text-sm text-black/60 dark:text-white/60">{request.notes}</p>}
                 </div>
 
-                <div className="relative self-center">
+                <div className="grid gap-3 self-center">
+                  <div className="grid gap-2 md:hidden">
+                    {statuses.map((status) => (
+                      <button
+                        key={status}
+                        type="button"
+                        onClick={() => void update(request.id, status)}
+                        className={`flex w-full items-center justify-between rounded-lg px-4 py-3 text-left font-semibold ring-1 transition ${statusStyles[status]}`}
+                      >
+                        <span>{statusLabel(status)}</span>
+                        {request.status === status && <Check size={16} />}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="relative hidden md:block">
                   <button
                     type="button"
                     onClick={() => setOpenMenu((value) => (value === request.id ? null : request.id))}
@@ -185,6 +200,7 @@ export function AdminPage() {
                       ))}
                     </div>
                   )}
+                  </div>
                 </div>
               </article>
             ))}
