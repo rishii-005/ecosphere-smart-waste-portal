@@ -37,7 +37,9 @@ export function AuthPage() {
         <div className="relative min-h-[360px] bg-[linear-gradient(135deg,rgba(47,111,87,.95),rgba(34,211,238,.72)),url('https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center p-8 text-white">
           <Leaf size={42} />
           <h1 className="mt-8 font-display text-4xl font-bold">Turn city waste into measurable climate action.</h1>
-          <p className="mt-4 text-white/78">Demo users: admin@smartwaste.local or asha@example.com with password <strong>password</strong>.</p>
+          <p className="mt-4 max-w-md text-white/78">
+            Coordinate cleaner neighborhoods with smart pickups, real-time request tracking, and AI guidance for better recycling decisions.
+          </p>
         </div>
         <form onSubmit={submit} className="p-8">
           <h2 className="font-display text-3xl font-bold">{mode === "login" ? "Welcome back" : "Create account"}</h2>
