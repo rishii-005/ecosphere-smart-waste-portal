@@ -3,8 +3,8 @@ import { useAuth } from "../context/AuthContext";
 import type { Role } from "../types";
 
 export function ProtectedRoute({ children, role }: { children: React.ReactNode; role?: Role }) {
-  const { user } = useAuth();
-  if (!user) return <Navigate to="/login" replace />;
+  const { user, token } = useAuth();
+  if (!user || !token) return <Navigate to="/login" replace />;
   if (role && user.role !== role) return <Navigate to="/dashboard" replace />;
   return children;
 }

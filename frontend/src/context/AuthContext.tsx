@@ -14,15 +14,24 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const initialToken = localStorage.getItem("smartWasteToken");
   const [user, setUser] = useState<User | null>(() => {
+    if (!initialToken) return null;
     const raw = localStorage.getItem("smartWasteUser");
     return raw ? (JSON.parse(raw) as User) : null;
   });
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem("smartWasteToken"));
+  const [token, setToken] = useState<string | null>(initialToken);
 
   useEffect(() => {
     void api.warmup().catch(() => undefined);
   }, []);
+
+  useEffect(() => {
+    if (!token && user) {
+      setUser(null);
+      localStorage.removeItem("smartWasteUser");
+    }
+  }, [token, user]);
 
   const persist = (nextUser: User, nextToken: string) => {
     setUser(nextUser);
@@ -55,6 +64,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }),
     [token, user]
   );
+
+  useEffect(() => {
+    const handleExpiredSession = () => {
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem("smartWasteUser");
+      localStorage.removeItem("smartWasteToken");
+      toast.error("Session expired. Please login again.");
+    };
+
+    window.addEventListener("smartWaste:auth-expired", handleExpiredSession);
+    return () => {
+      window.removeEventListener("smartWaste:auth-expired", handleExpiredSession);
+    };
+  }, []);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

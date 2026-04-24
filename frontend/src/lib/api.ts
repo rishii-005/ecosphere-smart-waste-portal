@@ -26,6 +26,17 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     throw new ApiError("Backend se connection nahi ban pa raha. Pehle backend terminal me `npm.cmd run dev` chalao, phir page refresh karo.");
   }
   const data = await response.json().catch(() => ({}));
+  if (response.status === 401) {
+    const message = String(data.message || "");
+    if (
+      message.toLowerCase().includes("token") ||
+      message.toLowerCase().includes("auth") ||
+      message.toLowerCase().includes("unauthorized")
+    ) {
+      window.dispatchEvent(new Event("smartWaste:auth-expired"));
+      throw new ApiError("Session expired. Please login again.");
+    }
+  }
   if (!response.ok) throw new ApiError(data.message || "Request failed.");
   return data as T;
 }
