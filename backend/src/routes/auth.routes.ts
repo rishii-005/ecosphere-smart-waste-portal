@@ -32,7 +32,7 @@ router.post("/signup", validate(signupSchema), async (req, res, next) => {
       id: crypto.randomUUID(),
       name: req.body.name,
       email: req.body.email,
-      passwordHash: await bcrypt.hash(req.body.password, 10),
+      passwordHash: await bcrypt.hash(req.body.password, 8),
       role: "user",
       createdAt: new Date().toISOString()
     });

@@ -1,5 +1,5 @@
-import { FormEvent, useState } from "react";
-import { Leaf } from "lucide-react";
+import { FormEvent, useMemo, useState } from "react";
+import { Leaf, LoaderCircle } from "lucide-react";
 import { Navigate, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Button } from "../components/Button";
@@ -10,6 +10,10 @@ export function AuthPage() {
   const [loading, setLoading] = useState(false);
   const { user, login, signup } = useAuth();
   const navigate = useNavigate();
+  const loadingText = useMemo(
+    () => (mode === "login" ? "Signing you in..." : "Creating your account..."),
+    [mode]
+  );
 
   if (user) return <Navigate to="/dashboard" replace />;
 
@@ -48,7 +52,18 @@ export function AuthPage() {
             {mode === "signup" && <input className="field" name="name" placeholder="Full name" minLength={2} required />}
             <input className="field" name="email" type="email" placeholder="Email" required />
             <input className="field" name="password" type="password" placeholder="Password" minLength={6} required />
-            <Button disabled={loading} className="mt-2">{loading ? "Please wait..." : mode === "login" ? "Login" : "Sign up"}</Button>
+            <Button disabled={loading} className="mt-2 inline-flex items-center justify-center gap-2">
+              {loading ? (
+                <>
+                  <LoaderCircle size={18} className="animate-spin" />
+                  {loadingText}
+                </>
+              ) : mode === "login" ? (
+                "Login"
+              ) : (
+                "Sign up"
+              )}
+            </Button>
           </div>
           <button type="button" onClick={() => setMode(mode === "login" ? "signup" : "login")} className="mt-5 text-sm font-semibold text-moss dark:text-mint">
             {mode === "login" ? "Need an account? Sign up" : "Already registered? Login"}

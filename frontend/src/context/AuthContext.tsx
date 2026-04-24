@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { api } from "../lib/api";
 import type { User } from "../types";
@@ -19,6 +19,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return raw ? (JSON.parse(raw) as User) : null;
   });
   const [token, setToken] = useState<string | null>(() => localStorage.getItem("smartWasteToken"));
+
+  useEffect(() => {
+    void api.warmup().catch(() => undefined);
+  }, []);
 
   const persist = (nextUser: User, nextToken: string) => {
     setUser(nextUser);
