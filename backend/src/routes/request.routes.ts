@@ -12,10 +12,10 @@ const router = Router();
 const requestSchema = z.object({
   body: z.object({
     wasteType: z.enum(["plastic", "organic", "e-waste", "paper", "metal", "glass", "mixed"]),
-    quantityKg: z.coerce.number().min(1).max(500),
-    address: z.string().min(8),
-    pickupDate: z.string().min(10),
-    notes: z.string().max(500).optional().or(z.literal("")),
+    quantityKg: z.coerce.number().min(1, "Quantity must be at least 1 kg.").max(500, "Quantity cannot exceed 500 kg."),
+    address: z.string().trim().min(8, "Please enter a full pickup address."),
+    pickupDate: z.string().min(10, "Please select a pickup date."),
+    notes: z.string().trim().max(500, "Notes cannot exceed 500 characters.").optional().or(z.literal("")),
     imageUrl: z.string().optional().or(z.literal(""))
   })
 });

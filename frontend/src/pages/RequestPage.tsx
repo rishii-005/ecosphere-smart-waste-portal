@@ -120,13 +120,32 @@ export function RequestPage() {
     event.preventDefault();
     const formElement = event.currentTarget;
     const form = new FormData(formElement);
+    const quantityKg = Number(form.get("quantityKg"));
+    const pickupDate = String(form.get("pickupDate") || "");
+    const cleanedAddress = address.trim();
+
+    if (!Number.isFinite(quantityKg) || quantityKg < 1 || quantityKg > 500) {
+      toast.error("Please enter a valid quantity between 1 and 500 kg.");
+      return;
+    }
+
+    if (!pickupDate) {
+      toast.error("Please select a pickup date.");
+      return;
+    }
+
+    if (cleanedAddress.length < 8) {
+      toast.error("Please enter a complete pickup address.");
+      return;
+    }
+
     setLoading(true);
     try {
       await api.createRequest({
         wasteType,
-        quantityKg: Number(form.get("quantityKg")),
-        address,
-        pickupDate: String(form.get("pickupDate")),
+        quantityKg,
+        address: cleanedAddress,
+        pickupDate,
         notes: String(form.get("notes") || ""),
         imageUrl: preview
       });

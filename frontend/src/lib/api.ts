@@ -7,6 +7,16 @@ interface AuthResponse {
   token: string;
 }
 
+function extractIssueMessage(data: unknown) {
+  if (!data || typeof data !== "object" || !("issues" in data)) return "";
+  const issues = (data as { issues?: Record<string, string[] | undefined> }).issues;
+  if (!issues) return "";
+  for (const value of Object.values(issues)) {
+    if (Array.isArray(value) && value[0]) return value[0];
+  }
+  return "";
+}
+
 export class ApiError extends Error {
   constructor(message: string) {
     super(message);
@@ -37,7 +47,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
       throw new ApiError("Session expired. Please login again.");
     }
   }
-  if (!response.ok) throw new ApiError(data.message || "Request failed.");
+  if (!response.ok) throw new ApiError(data.message || extractIssueMessage(data) || "Request failed.");
   return data as T;
 }
 
