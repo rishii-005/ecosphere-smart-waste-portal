@@ -18,17 +18,9 @@ It is designed to feel like a real civic-tech product: citizens can request pick
 
 EcoSphere Smart Waste Portal is a smart city web platform that helps citizens schedule waste pickups, learn how to recycle correctly, and receive AI-powered sustainability guidance. It combines a modern React frontend with an Express and Socket.IO backend to deliver real-time request tracking, role-based access control, and an intuitive government-grade user experience.
 
-## Suggested GitHub Repository Name
 
-```text
-ecosphere-smart-waste-portal
-```
 
-## Suggested GitHub Description
 
-```text
-A full-stack smart waste management platform with pickup requests, live status tracking, recycling education, AI guidance, and admin operations dashboard.
-```
 
 ## Tech Stack
 
