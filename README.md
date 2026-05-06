@@ -302,7 +302,7 @@ git remote add origin https://github.com/YOUR_USERNAME/ecosphere-smart-waste-por
 git push -u origin main
 ```
 
-## Suggested GitHub Topics
+## Topics
 
 ```text
 react
@@ -319,14 +319,6 @@ dashboard
 full-stack
 ```
 
-## Suggested Screenshot Sections for GitHub
-
-- Landing page
-- Dashboard
-- Pickup request page
-- AI assistant page
-- Admin panel
-- Live location preview
 
 ## Future Improvements
 
